@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"fmt"
 )
 
 // Upstream represents `upstream{}` block
@@ -117,3 +118,23 @@ func (us *Upstream) FindDirectives(directiveName string) []IDirective {
 
 	return directives
 }
+
+// DeleteUpsreamServerByAddr delete upstreamServer in the upstream
+func (us *Upstream) DeleteUpsreamServerByAddr(addr string) error {
+	index := -1
+	for i := 0; i < len(us.UpstreamServers); i++ {
+		if us.UpstreamServers[i].Address == addr {
+			index = i
+			us.UpstreamServers = append(us.UpstreamServers[:i], us.UpstreamServers[i+1:]...)
+			break
+		}
+	}
+	if index == -1 {
+		return fmt.Errorf("upstream [%v] server [%v] not found", us.UpstreamName, addr)
+	}
+	return nil
+}
+
+//func (us *Upstream) FindUpstreamServerByAddr(addr string) (*UpstreamServer, error) {
+//
+//}

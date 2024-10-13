@@ -58,3 +58,14 @@ func (s *Server) GetParameters() []string {
 func (s *Server) GetBlock() IBlock {
 	return s.Block
 }
+
+// addDirective add a  directive to
+func (s *Server) addDirective(directive Directive) {
+	block := s.GetBlock()
+	realBlock := block.(*Block)
+	realBlock.Directives = append(realBlock.Directives, &directive)
+}
+
+//func (s *Server) AddDeny(address string) error {
+//
+//}
